@@ -43,12 +43,16 @@ class Feed extends Component {
       })
       .then((response)=> response.json())
       .then((resonseData)=> {
+
         var feedItems = resonseData.filter((ev)=>
-          ev.type == 'ForkEvent');
+          ev.type == 'PushEvent');
         this.setState({dataSource:
           this.state.dataSource.cloneWithRows(feedItems),
           showProgress: false
         });
+      })
+      .catch((err)=> {
+        throw err;
       });
     })
   }
