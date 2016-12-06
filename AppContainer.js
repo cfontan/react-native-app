@@ -6,7 +6,8 @@ import {
   Text,
   View,
   StyleSheet,
-  TabBarIOS
+  TabBarIOS,
+  NavigatorIOS
 } from 'react-native';
 import Callouts from './components/Callouts';
 import Feed from './Feed';
@@ -26,7 +27,15 @@ class AppContainer extends Component {
           selected={this.state.selectedTab =='feed'}
           onPress={()=> this.setState({selectedTab: 'feed'})}>
 
-          <Feed/>
+          <NavigatorIOS
+            style={{
+              flex: 1
+            }}
+            initialRoute={{
+              component: Feed,
+              title: 'Feed'
+            }}
+            />
 
         </TabBarIOS.Item>
         <TabBarIOS.Item
@@ -48,7 +57,6 @@ class AppContainer extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
     alignItems: 'center',
     justifyContent: 'center',
   },

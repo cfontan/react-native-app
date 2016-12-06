@@ -7,9 +7,12 @@ import {
   ListView,
   StyleSheet,
   ActivityIndicator,
-  Image
+  Image,
+  TouchableHighlight
 } from 'react-native';
 import AuthService from './services/AuthService';
+import moment from 'moment';
+import PushPayload from './PushPayload';
 
 
 class Feed extends Component {
@@ -20,7 +23,7 @@ class Feed extends Component {
     });
 
     this.state = {
-      dataSource: ds.cloneWithRows(['A','B','C']),
+      dataSource: ds,
       showProgress: true
     };
   }
@@ -34,13 +37,12 @@ class Feed extends Component {
       var url = 'https://api.github.com/users/'
         + authInfo.user.login
         + '/events';
-      console.log(authInfo.header);
+
       fetch(url,{
         headers: authInfo.header
       })
       .then((response)=> response.json())
       .then((resonseData)=> {
-        console.log(resonseData);
         var feedItems = resonseData.filter((ev)=>
           ev.type == 'ForkEvent');
         this.setState({dataSource:
@@ -51,27 +53,42 @@ class Feed extends Component {
     })
   }
 
+  pressRow(rowData){
+    this.props.navigator.push({
+      title: 'Events',
+      component: PushPayload,
+      passProps: {
+        events: rowData
+      }
+    });
+  }
+
   renderRow(rowData){
     return (
-      <View style={styles.rowItems}>
-        <Image
-          source={{uri: rowData.actor.avatar_url}}
-          style={styles.avatar}
-        />
-        <View style={{
-          padding: 20
-        }}>
-          <Text style={{backgroundColor: '#FFF'}}>
-            {rowData.created_at}
-          </Text>
-          <Text style={{backgroundColor: '#FFF'}}>
-            {rowData.actor.login}
-          </Text>
-          <Text style={{backgroundColor: '#FFF'}}>
-            {rowData.repo.name}
-          </Text>
+      <TouchableHighlight
+        onPress={()=> this.pressRow(rowData)}
+        underlayColor='#ddd'
+      >
+        <View style={styles.rowItems}>
+          <Image
+            source={{uri: rowData.actor.avatar_url}}
+            style={styles.avatar}
+          />
+          <View style={{
+            padding: 20
+          }}>
+            <Text>
+              {moment(rowData.created_at).fromNow()}
+            </Text>
+            <Text>
+              {rowData.actor.login + ' ' + rowData.type}
+            </Text>
+            <Text>
+              {rowData.repo.name}
+            </Text>
+          </View>
         </View>
-      </View>
+      </TouchableHighlight>
     );
   }
 
@@ -99,6 +116,7 @@ class Feed extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 60,
     justifyContent: 'flex-start'
   },
   loading: {
