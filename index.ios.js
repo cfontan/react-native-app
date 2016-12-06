@@ -10,26 +10,65 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput
+  TextInput,
+  ActivityIndicator
 } from 'react-native';
-import Callouts from './components/Callouts';
-import Login from './login';
 
-class Project extends Component {
-  constructor(props) {
-    super(props);
+import Login from './Login';
+import AppContainer from './AppContainer';
+import AuthService from './services/AuthService';
+
+var Project = React.createClass({
+  componentDidMount: function() {
+      AuthService.getAuthInfo((err, authInfo)=> {
+        this.setState({
+          checkingAuth: false,
+          isLoggedIn: authInfo != null
+        })
+      })
+  },
+  render: function() {
+    if(this.state.checkingAuth){
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator
+            animating={true}
+            size='large'
+            style={styles.loader} />
+        </View>
+      )
+    }
+
+
+    if(this.state.isLoggedIn){
+      return (
+        <AppContainer/>
+      )
+    }else {
+      return (
+        <Login onLogin={this.onLogin}/>
+      );
+    }
+  },
+  onLogin: function(){
+    this.setState({isLoggedIn: true});
+  },
+  getInitialState: function(){
+    return {
+      isLoggedIn: false,
+      checkingAuth: true
+    }
   }
-  render() {
-    return (
+});
 
-      <Login/>
-      //<Callouts/>
-
-    );
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5FCFF',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
-}
-
-
+})
 
 
 

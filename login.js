@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   ActivityIndicator,
 } from 'react-native';
+import AuthService from './services/AuthService';
 
 class Login extends Component {
   constructor(props) {
@@ -19,9 +20,25 @@ class Login extends Component {
     }
   }
   render(){
+    var errorCtrl = <View/>;
+
+    if (!this.state.success && this.state.badCredentials){
+      errorCtrl = <Text style={styles.error}>
+        The username and password combination entered were incorrect. Try Again.
+        </Text>
+    }
+
+    if (!this.state.success && this.state.unknownError){
+      errorCtrl = <Text style={styles.error}>
+        We experienced an unexpected issue
+        </Text>
+    }
+
+
     return(
+
       <View style={styles.container}>
-        <Text style={styles.loginHeading}>Fraytr</Text>
+        <Text style={styles.loginHeading}>test app</Text>
         <TextInput
           onChangeText={(text)=> this.setState({username: text})}
           style={styles.loginInput}
@@ -37,6 +54,9 @@ class Login extends Component {
             Log in
           </Text>
         </TouchableHighlight>
+
+        {errorCtrl}
+
         <ActivityIndicator
           animating={this.state.showProgress}
           size="large"
@@ -44,17 +64,23 @@ class Login extends Component {
       </View>
     );
   }
+
+
   onLoginPressed(){
     console.log('Attempting to log in with username: ' + this.state.username);
       this.setState({showProgress: true});
-      fetch('https://api.github.com/search/repositories?q=react')
-      .then((response)=> {
-        return response.json();
-      })
-      .then((results)=> {
-        console.log(results);
-        this.setState({showProgress: false});
-      })
+    AuthService.login({
+      username: this.state.username,
+      password: this.state.password
+    }, (results)=> {
+      this.setState(Object.assign({
+        showProgress: false
+      }, results));
+
+      if (results.success && this.props.onLogin){
+        this.props.onLogin();
+      }
+    });
   }
 }
 
@@ -63,8 +89,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5FCFF',
     paddingTop: 40,
-    alignItems: 'center',
     padding: 10,
+    alignItems: 'center',
   },
   loginHeading: {
     padding: 10,
@@ -92,6 +118,10 @@ const styles = StyleSheet.create({
   },
   loader: {
     marginTop: 20,
+  },
+  error: {
+    color: 'red',
+    paddingTop: 10,
   }
 
 
