@@ -73,14 +73,12 @@ class Feed extends Component {
         onPress={()=> this.pressRow(rowData)}
         underlayColor='#ddd'
       >
-        <View style={styles.rowItems}>
+        <View style={styles.rowContainer}>
           <Image
             source={{uri: rowData.actor.avatar_url}}
             style={styles.avatar}
           />
-          <View style={{
-            padding: 20
-          }}>
+          <View style={styles.rowTextContainer}>
             <Text>
               {moment(rowData.created_at).fromNow()}
             </Text>
@@ -127,13 +125,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
-  rowItems: {
+  rowContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
     borderColor: '#D7D7D7',
     borderBottomWidth: 1
+  },
+  rowTextContainer: {
+    padding: 20
   },
   avatar: {
     height: 36,
