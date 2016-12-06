@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Callouts from './components/Callouts';
 import Feed from './Feed';
+import Search from './Search';
 
 class AppContainer extends Component {
   constructor(props) {
@@ -28,9 +29,7 @@ class AppContainer extends Component {
           onPress={()=> this.setState({selectedTab: 'feed'})}>
 
           <NavigatorIOS
-            style={{
-              flex: 1
-            }}
+            style={styles.navigator}
             initialRoute={{
               component: Feed,
               title: 'Feed'
@@ -39,14 +38,17 @@ class AppContainer extends Component {
 
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          style={styles.tabItem}
           title="Search"
           selected={this.state.selectedTab == 'search'}
           onPress={()=> this.setState({selectedTab: 'search'})}>
 
-          <Text style={styles.welcome}>
-            Tab 2
-          </Text>
+          <NavigatorIOS
+            style={styles.navigator}
+            initialRoute={{
+              component: Search,
+              title: 'Search'
+            }}
+            />
 
         </TabBarIOS.Item>
       </TabBarIOS>
@@ -60,9 +62,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  tabItem: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  navigator: {
+    flex: 1
   }
 })
 
