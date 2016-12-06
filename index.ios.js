@@ -14,9 +14,9 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-import Login from './Login';
-import AppContainer from './AppContainer';
-import AuthService from './services/AuthService';
+import Login from './app/Login';
+import AppContainer from './app/AppContainer';
+import AuthService from './app/services/AuthService';
 
 var Project = React.createClass({
   componentDidMount: function() {

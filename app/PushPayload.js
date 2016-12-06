@@ -8,7 +8,6 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import AuthService from './services/AuthService';
 import moment from 'moment';
 
 class PushPayload extends Component {

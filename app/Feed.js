@@ -1,3 +1,4 @@
+'use string';
 
 import React, {Component} from 'react';
 
@@ -59,7 +60,7 @@ class Feed extends Component {
 
   pressRow(rowData){
     this.props.navigator.push({
-      title: 'Events',
+      title: 'Push Payload',
       component: PushPayload,
       passProps: {
         events: rowData
