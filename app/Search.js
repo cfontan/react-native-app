@@ -9,6 +9,7 @@ import {
   StyleSheet,
   TouchableHighlight
 } from 'react-native';
+import SearchResults from './SearchResults';
 
 class Search extends Component {
   constructor(props) {
@@ -38,7 +39,13 @@ class Search extends Component {
 
 
   onSearchPressed(){
-    console.log('Attempting to search for ' + this.state.searchQuery);
+    this.props.navigator.push({
+      component: SearchResults,
+      title: 'Results',
+      passProps: {
+        searchQuery: this.state.searchQuery
+      }
+    });
   }
 }
 
@@ -69,8 +76,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     alignSelf: 'center',
   }
-
-
 })
 
 module.exports = Search;
