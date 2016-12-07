@@ -42,11 +42,13 @@ class Login extends Component {
         <TextInput
           onChangeText={(text)=> this.setState({username: text})}
           style={styles.loginInput}
-          placeholder={'Enter username'}></TextInput>
+          placeholder={'Enter username'}>
+        </TextInput>
         <TextInput
           onChangeText={(text)=> this.setState({password: text})}
           style={styles.loginInput}
-          placeholder={'Enter password'} password={'true'}></TextInput>
+          placeholder={'Enter password'} password={'true'}>
+        </TextInput>
         <TouchableHighlight
           onPress={this.onLoginPressed.bind(this)}
           style={styles.button}>
@@ -67,12 +69,14 @@ class Login extends Component {
 
 
   onLoginPressed(){
-    console.log('Attempting to log in with username: ' + this.state.username);
-      this.setState({showProgress: true});
+
+    this.setState({showProgress: true});
+
     AuthService.login({
       username: this.state.username,
       password: this.state.password
     }, (results)=> {
+
       this.setState(Object.assign({
         showProgress: false
       }, results));

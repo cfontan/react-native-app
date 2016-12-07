@@ -1,11 +1,12 @@
 import {Buffer} from 'buffer';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, AlertIOS} from 'react-native';
 import {_} from 'lodash';
 
 const authKey = 'auth';
 const userKey = 'user';
 
 class AuthService {
+
   getAuthInfo(cb){
 
     AsyncStorage.multiGet([authKey,userKey], (err,stores)=> {
@@ -46,6 +47,16 @@ class AuthService {
 
        return cb(null, authInfo);
     });
+  }
+
+  async _userLogout() {
+    try {
+      await AsyncStorage.multiRemove([authKey,userKey], (err) => {
+        AlertIOS.alert("Logout Success!");
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   login(creds,cb){

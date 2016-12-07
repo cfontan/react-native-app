@@ -42,7 +42,7 @@ var Project = React.createClass({
 
     if(this.state.isLoggedIn){
       return (
-        <AppContainer/>
+        <AppContainer onLogout={this.onLogout}/>
       )
     }else {
       return (
@@ -52,6 +52,9 @@ var Project = React.createClass({
   },
   onLogin: function(){
     this.setState({isLoggedIn: true});
+  },
+  onLogout: function(){
+    this.setState({isLoggedIn: false});
   },
   getInitialState: function(){
     return {
